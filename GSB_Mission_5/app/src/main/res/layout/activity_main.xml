@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Hello World!"-->
+    <!--/>-->
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/login"
+        android:id="@+id/et_login"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/mot_de_passe"
+        android:id="@+id/et_mot_de_passe"
+        android:inputType="textPassword"
+        />
+
+    <Button
+        android:id="@+id/bt_valider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="bt_Valider"
+        android:text="@string/valider" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_annuler"
+        android:text="@string/annuler"
+        android:onClick="bt_Annuler"/>
+
+
+
+
+</LinearLayout>
