@@ -54,9 +54,14 @@ public class MainActivity extends AppCompatActivity {
 
         String url = "http://localhost:49297/api/visiteur/connexion/" + login + "/" + mdp;
 
+        Log.i("APP_RV","Login:"+ login);
+        Log.i("APP_RV","Mdp:"+ mdp);
+
+
         Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
                 Log.i("APP_RV","Visiteur : "+ response.toString());
                 try {
                     String matricule = response.getString("visMatricule");
