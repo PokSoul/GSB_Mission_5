@@ -4,10 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Hello World!"-->
+    <!--/>-->
+
     <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Hello World!"
-    />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Menu"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:id="@+id/id_matricule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        />
+
+    <Button
+        android:onClick="seDeconnecter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="300dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+
+        android:text="@string/app_deconnexion" />
 
 </LinearLayout>

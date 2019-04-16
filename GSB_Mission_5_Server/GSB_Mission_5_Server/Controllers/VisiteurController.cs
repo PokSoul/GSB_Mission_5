@@ -52,5 +52,16 @@ namespace GSB_Mission_5_Server.Controllers
             var result = _connection.QuerySingle<Visiteur>(sql);
             return Ok(result);
         }
+
+        /**
+         * Retourne le visiteur dont l'identifiant et le mot de passe sont en paramètres
+         */
+        [HttpGet, Route("visiteur/connexion/{login}/{mdp}")]
+        public IHttpActionResult GetVisiteur(string login, string mdp)
+        {
+            var sql = "SELECT * FROM visiteur WHERE vis_login = '" + login + "' AND vis_mdp = '" + mdp + "'";
+            var result = _connection.QuerySingle<Visiteur>(sql);
+            return Ok(result);
+        }
     }
 }
