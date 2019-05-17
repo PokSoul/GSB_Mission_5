@@ -10,19 +10,26 @@ using System.Web.Http;
 
 namespace GSB_Mission_5_Server.Controllers
 {
+    /// <summary>
+    /// Contrôleur lié aux rapports de visites (comptes rendus)
+    /// </summary>
     [AllowAnonymous, RoutePrefix("api")]
     public class RapportVisiteController : ApiController
     {
         private readonly MySqlConnection _connection;
 
+        /// <summary>
+        /// Constructeur permettant d'injecter la connexion
+        /// </summary>
         public RapportVisiteController()
         {
             _connection = new MySqlConnection(Const.connectionString);
         }
 
-        /**
-         * Retourne tous les rapports de visites
-         */
+        /// <summary>
+        /// Retourne tous les rapports de visites
+        /// </summary>
+        /// <returns></returns>
         [HttpGet, Route("rapportvisite")]
         public IHttpActionResult GetRapportsVisite()
         {
@@ -31,9 +38,12 @@ namespace GSB_Mission_5_Server.Controllers
             return Ok(result);
         }
 
-        /**
-         * Retourne toutes les dates (format année-mois) des rapports de visite d'un visiteur dont le matricule est passé en paramètre
-         */
+        /// <summary>
+        /// Retourne toutes les dates (format année-mois) des rapports de visite d'un visiteur
+        /// dont le matricule est passé en paramètre
+        /// </summary>
+        /// <param name="vis_matricule"></param>
+        /// <returns></returns>
         [HttpGet, Route("rapportvisite/{vis_matricule}")]
         public IHttpActionResult GetRapportVisite(string vis_matricule)
         {
@@ -42,9 +52,12 @@ namespace GSB_Mission_5_Server.Controllers
             return Ok(result);
         }
 
-        /**
-         * Retourne tous les rapports de visite d'un visiteur à une date, tout deux passés en paramètres
-         */
+        /// <summary>
+        /// Retourne tous les rapports de visite d'un visiteur à une date, tout deux passés en paramètres
+        /// </summary>
+        /// <param name="rap_dateRapport"></param>
+        /// <param name="vis_matricule"></param>
+        /// <returns></returns>
         [HttpGet, Route("rapportvisite/{vis_matricule}/{rap_dateRapport}/")]
         public IHttpActionResult GetRapportsVisite(string rap_dateRapport, string vis_matricule)
         {
