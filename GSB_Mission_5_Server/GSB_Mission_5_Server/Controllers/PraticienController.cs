@@ -54,12 +54,12 @@ namespace GSB_Mission_5_Server.Controllers
         /// <summary>
         /// Retoure les praticiens associés à un visiteur dont le matricule est passé en paramètre
         /// </summary>
-        /// <param name="pra_visiteur"></param>
+        /// <param name="vis_matricule"></param>
         /// <returns></returns>
-        [HttpGet, Route("praticien/visiteur/{pra_visiteur}")]
-        public IHttpActionResult GetPraticiensPraVisiteur(string pra_visiteur)
+        [HttpGet, Route("praticien/visiteur/{vis_matricule}")]
+        public IHttpActionResult GetPraticiensPraVisiteur(string vis_matricule)
         {
-            var sql = "SELECT * FROM praticien WHERE pra_visiteur = '" + pra_visiteur + "'";
+            var sql = "SELECT * FROM praticien WHERE pra_visiteur = '" + vis_matricule + "'";
             var result = _connection.Query<Praticien>(sql);
             return Ok(result);
         }

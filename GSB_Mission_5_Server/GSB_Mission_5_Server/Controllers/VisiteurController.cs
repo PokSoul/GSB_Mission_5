@@ -57,24 +57,10 @@ namespace GSB_Mission_5_Server.Controllers
         /// <param name="login"></param>
         /// <param name="mdp"></param>
         /// <returns></returns>
-        [HttpGet, Route("visiteur/connexion/{login}/{mdp}")]
-        public IHttpActionResult GetVisiteur(string login, string mdp)
-        {
-            var sql = "SELECT * FROM visiteur WHERE vis_login = '" + login + "' AND vis_mdp = '" + mdp + "'";
-            var result = _connection.QuerySingle<Visiteur>(sql);
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Retourne le visiteur dont l'identifiant et le mot de passe sont envoyés par méthode HttpPost
-        /// </summary>
-        /// <param name="login"></param>
-        /// <param name="mdp"></param>
-        /// <returns></returns>
         [HttpPost, Route("visiteur/connexion")]
-        public IHttpActionResult PostVisiteur(string login, string mdp)
+        public IHttpActionResult PostVisiteur(string vis_login, string vis_mdp)
         {
-            var sql = "SELECT * FROM visiteur WHERE vis_login = '" + login + "' AND vis_mdp = '" + mdp + "'";
+            var sql = "SELECT * FROM visiteur WHERE vis_login = '" + vis_login + "' AND vis_mdp = '" + vis_mdp + "'";
             var result = _connection.QuerySingle<Visiteur>(sql);
             return Ok(result);
         }

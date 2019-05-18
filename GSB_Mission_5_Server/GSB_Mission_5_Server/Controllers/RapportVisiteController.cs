@@ -27,25 +27,13 @@ namespace GSB_Mission_5_Server.Controllers
         }
 
         /// <summary>
-        /// Retourne tous les rapports de visites
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet, Route("rapportvisite")]
-        public IHttpActionResult GetRapportsVisite()
-        {
-            var sql = "SELECT * FROM rapport_visite";
-            var result = _connection.Query<RapportVisite>(sql).ToList();
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Retourne toutes les dates (format année-mois) des rapports de visite d'un visiteur
+        /// Retourne toutes les dates (yyyy-MM) des rapports de visite d'un visiteur
         /// dont le matricule est passé en paramètre
         /// </summary>
         /// <param name="vis_matricule"></param>
         /// <returns></returns>
-        [HttpGet, Route("rapportvisite/{vis_matricule}")]
-        public IHttpActionResult GetRapportVisite(string vis_matricule)
+        [HttpGet, Route("rapportvisite/visiteur/{vis_matricule}/daterapport")]
+        public IHttpActionResult GetMoisRapportsVisite(string vis_matricule)
         {
             var sql = "SELECT DISTINCT SUBSTR(rap_dateRapport, 1, 7) AS rap_moisRapport FROM rapport_visite WHERE vis_matricule = '" + vis_matricule + "'";
             var result = _connection.Query<string>(sql).ToList();
@@ -53,17 +41,85 @@ namespace GSB_Mission_5_Server.Controllers
         }
 
         /// <summary>
-        /// Retourne tous les rapports de visite d'un visiteur à une date, tout deux passés en paramètres
+        /// Retourne tous les rapports de visite d'un visiteur à une date (yyyy-MM)
+        /// dont le matricule de visiteur et la date de rapport sont passés en paramètres
         /// </summary>
-        /// <param name="rap_dateRapport"></param>
         /// <param name="vis_matricule"></param>
+        /// <param name="rap_dateRapport"></param>
         /// <returns></returns>
-        [HttpGet, Route("rapportvisite/{vis_matricule}/{rap_dateRapport}/")]
-        public IHttpActionResult GetRapportsVisite(string rap_dateRapport, string vis_matricule)
+        [HttpGet, Route("rapportvisite/visiteur/{vis_matricule}/daterapport/{rap_dateRapport}/")]
+        public IHttpActionResult GetRapportsVisiteDate(string vis_matricule, string rap_dateRapport)
         {
             var sql = "SELECT * FROM rapport_visite WHERE rap_dateRapport LIKE '" + rap_dateRapport + "%' AND vis_matricule = '" + vis_matricule + "'";
             var result = _connection.Query<RapportVisite>(sql).ToList();
             return Ok(result);
-        }      
+        }
+
+        /// <summary>
+        /// Retourne le rapports de visites dont le numéro et le matricule de visiteur
+        /// sont passés en paramètres
+        /// </summary>
+        /// <param name="rap_num"></param>
+        /// <param name="vis_matricule"></param>
+        /// <returns></returns>
+        [HttpGet, Route("rapportvisite/{rap_num}/visiteur/{vis_matricule}/")]
+        public IHttpActionResult GetRapportsVisite(int rap_num, string vis_matricule)
+        {
+            var sql = "SELECT * FROM rapport_visite WHERE rap_num = " + rap_num + " AND vis_matricule = '" + vis_matricule + "'";
+            var result = _connection.QuerySingle<RapportVisite>(sql);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Insert un nouveau rapport de visite dans la base de données dont les attributs
+        /// sont passés en paramètres
+        /// </summary>
+        /// <param name="vis_matricule"></param>
+        /// <param name="pra_num"></param>
+        /// <param name="coef_num"></param>
+        /// <param name="rap_motif"></param>
+        /// <param name="rap_bilan"></param>
+        /// <param name="rap_dateVisite"></param>
+        /// <returns></returns>
+        [HttpPut, Route("rapportvisite/saisie")]
+        public IHttpActionResult PutVisiteur(string vis_matricule,
+                                             int pra_num,
+                                             int coef_num,
+                                             string rap_motif,
+                                             string rap_bilan,
+                                             DateTime rap_dateVisite)
+        {
+            var sql = @"INSERT INTO rapport_visite (vis_matricule,
+                                                    pra_num,
+                                                    coef_num,
+                                                    rap_motif,
+                                                    rap_bilan,
+                                                    rap_dateVisite,
+                                                    rap_dateRapport)
+                        VALUES (@param_vis_matricule,
+                                @param_pra_num,
+                                @param_coef_num,
+                                @param_rap_motif,
+                                @param_rap_bilan,
+                                @param_rap_dateVisite,
+                                CURDATE())";
+            try
+            {
+                var result = _connection.Execute(sql, new
+                {
+                    param_vis_matricule = vis_matricule,
+                    param_pra_num = pra_num,
+                    param_coef_num = coef_num,
+                    param_rap_motif = rap_motif,
+                    param_rap_bilan = rap_bilan,
+                    param_rap_dateVisite = rap_dateVisite
+                });
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
     }
 }
