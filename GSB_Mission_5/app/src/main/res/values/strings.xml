@@ -1,7 +1,19 @@
 <resources>
     <string name="app_name">GSB</string>
-    <string name="login">login</string>
-    <string name="mot_de_passe">mot de passe</string>
-    <string name="valider">Valider</string>
-    <string name="annuler">Annuler</string>
+
+    <!-- Login -->
+    <string name="login_screen_title">Connexion</string>
+    <string name="login_screen_id_label">Identifiant</string>
+    <string name="login_screen_id_input"> Votre identifiant </string>
+    <string name="login_screen_password_label">Mot de passe</string>
+    <string name="login_screen_password_input"> Votre mot de passe </string>
+    <string name="login_screen_confirm_button">Valider</string>
+    <string name="login_screen_cancel_button">Annuler</string>
+
+    <!-- Home -->
+    <string name="home_screen_title">Accueil</string>
+    <string name="home_screen_logout_button">Logout</string>
+    <string name="home_screen_add_cr_button">Saisir CR</string>
+    <string name="home_screen_show_cr_button">Consulter CR</string>
+
 </resources>
