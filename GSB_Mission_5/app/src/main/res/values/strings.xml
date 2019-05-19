@@ -3,17 +3,57 @@
 
     <!-- Login -->
     <string name="login_screen_title">Connexion</string>
-    <string name="login_screen_id_label">Identifiant</string>
-    <string name="login_screen_id_input"> Votre identifiant </string>
-    <string name="login_screen_password_label">Mot de passe</string>
-    <string name="login_screen_password_input"> Votre mot de passe </string>
+    <string name="login_screen_id_label">Identifiant :</string>
+    <string name="login_screen_id_input">Votre identifiant</string>
+    <string name="login_screen_password_label">Mot de passe :</string>
+    <string name="login_screen_password_input">Votre mot de passe</string>
     <string name="login_screen_confirm_button">Valider</string>
     <string name="login_screen_cancel_button">Annuler</string>
 
     <!-- Home -->
     <string name="home_screen_title">Accueil</string>
-    <string name="home_screen_logout_button">Logout</string>
-    <string name="home_screen_add_cr_button">Saisir CR</string>
-    <string name="home_screen_show_cr_button">Consulter CR</string>
+    <string name="home_screen_add_button">Saisir un nouveau rapport de visite</string>
+    <string name="home_screen_month_button">Consulter vos rapports de visites</string>
+    <string name="home_screen_logout_button">Se déconnecter</string>
+
+    <!-- Add new CR -->
+    <string name="add_screen_title">Saisie d\'un nouveau rapport de visite</string>
+    <string name="add_screen_datevisite_label">Date de la visite :</string>
+    <string name="add_screen_datevisite_input">AAAA-MM-JJ</string>
+    <string name="add_screen_praticien_label"> Praticien :</string>
+    <string name="add_screen_motif_label">Motif de la visite :</string>
+    <string name="add_screen_motif_input">Rédigez votre motif</string>
+    <string name="add_screen_bilan_label">Bilan de la visite :</string>
+    <string name="add_screen_bilan_input">Rédigez votre bilan</string>
+    <string name="add_screen_coefconfiance_label">Coefficient de confiance :</string>
+    <string name="add_screen_confirm_button">Valider</string>
+    <string name="add_screen_back_button">Retour</string>
+
+    <!-- Month selection -->
+    <string name="month_screen_title">Sélectionnez le mois des rapports de visites à consulter</string>
+    <string name="month_screen_daterapport_label">Mois disponibles :</string>
+    <string name="month_screen_confirm_button">Valider</string>
+    <string name="month_screen_back_button">Retour</string>
+
+    <!-- Show all CR -->
+    <string name="show_all_screen_title">Vos rapports de visites du mois sélectionné</string>
+    <string name="show_all_screen_back_button">Retour</string>
+    <string name="show_all_screen_detail_button">Détail</string>
+
+    <!-- Show a CR -->
+    <string name="show_screen_title">Rapport de visite sélectionné</string>
+    <string name="show_screen_datevisite_label">Date de la visite :</string>
+    <string name="show_screen_datevisite_output">[]</string>
+    <string name="show_screen_daterapport_label">Date du rapport :</string>
+    <string name="show_screen_daterapport_output">[]</string>
+    <string name="show_screen_praticien_label">Praticien :</string>
+    <string name="show_screen_praticien_output">[]</string>
+    <string name="show_screen_motif_label">Motif de la visite :</string>
+    <string name="show_screen_motif_output">[]</string>
+    <string name="show_screen_bilan_label">Bilan de la visite :</string>
+    <string name="show_screen_bilan_output">[]</string>
+    <string name="show_screen_coefconfiance_label">Coefficiant de confiance attribué :</string>
+    <string name="show_screen_coefconfiance_output">[]</string>
+    <string name="show_screen_back_button">Retour</string>
 
 </resources>
