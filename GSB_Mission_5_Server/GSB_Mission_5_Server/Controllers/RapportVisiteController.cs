@@ -71,8 +71,8 @@ namespace GSB_Mission_5_Server.Controllers
         }
 
         /// <summary>
-        /// Insert un nouveau rapport de visite dans la base de données dont les attributs
-        /// sont passés en paramètres
+        /// Dans la base de données, insert un nouveau rapport de visite
+        /// dont les attributs sont passés en paramètres
         /// </summary>
         /// <param name="vis_matricule"></param>
         /// <param name="pra_num"></param>
@@ -81,13 +81,13 @@ namespace GSB_Mission_5_Server.Controllers
         /// <param name="rap_bilan"></param>
         /// <param name="rap_dateVisite"></param>
         /// <returns></returns>
-        [HttpPut, Route("rapportvisite/saisie")]
-        public IHttpActionResult PutVisiteur(string vis_matricule,
-                                             int pra_num,
-                                             int coef_num,
-                                             string rap_motif,
-                                             string rap_bilan,
-                                             DateTime rap_dateVisite)
+        [HttpPost, Route("rapportvisite/saisie")]
+        public IHttpActionResult PostRapportVisite(string vis_matricule,
+                                                   int pra_num,
+                                                   int coef_num,
+                                                   string rap_motif,
+                                                   string rap_bilan,
+                                                   DateTime rap_dateVisite)
         {
             var sql = @"INSERT INTO rapport_visite (vis_matricule,
                                                     pra_num,
