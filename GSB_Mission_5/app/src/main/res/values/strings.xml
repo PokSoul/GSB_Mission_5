@@ -8,7 +8,6 @@
     <string name="login_screen_password_label">Mot de passe :</string>
     <string name="login_screen_password_input">Votre mot de passe</string>
     <string name="login_screen_confirm_button">Valider</string>
-    <string name="login_screen_cancel_button">Annuler</string>
 
     <!-- Home -->
     <string name="home_screen_title">Accueil</string>

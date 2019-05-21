@@ -1,13 +1,21 @@
-package fr.mission5.gsb;
+package fr.mission5.gsb.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import fr.mission5.gsb.R;
+import fr.mission5.gsb.persistence.DatabaseManager;
+
 public class LoginActivity extends AppCompatActivity {
 
+    // base de données (dao)
+    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+
+    // composants
     private Button confirmButtonView;
 
     @Override
@@ -24,5 +32,10 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             }
         });
+
+
+        // verif si les services sont allumés
+        databaseManager.isLoaded();
+
     }
 }

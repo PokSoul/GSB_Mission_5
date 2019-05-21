@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.mission5.gsb">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,12 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowActivity"></activity>
-        <activity android:name=".ShowAllActivity" />
-        <activity android:name=".MonthActivity" />
-        <activity android:name=".AddActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities.ShowActivity"></activity>
+        <activity android:name=".activities.ShowAllActivity" />
+        <activity android:name=".activities.MonthActivity" />
+        <activity android:name=".activities.AddActivity" />
+        <activity android:name=".activities.HomeActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
