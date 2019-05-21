@@ -3,7 +3,15 @@ package fr.mission5.gsb.persistence;
 import android.util.Log;
 import java.sql.Timestamp;
 import java.util.List;
+
+import fr.mission5.gsb.callbacks.CoefListCallback;
+import fr.mission5.gsb.callbacks.LoginCallback;
+import fr.mission5.gsb.callbacks.MoisListCallback;
+import fr.mission5.gsb.callbacks.PraticienListCallback;
+import fr.mission5.gsb.callbacks.RapportCreateCallback;
+import fr.mission5.gsb.callbacks.RapportListCallback;
 import fr.mission5.gsb.objects.CoefficientConfiance;
+import fr.mission5.gsb.objects.Mois;
 import fr.mission5.gsb.objects.Praticien;
 import fr.mission5.gsb.objects.RapportVisite;
 import fr.mission5.gsb.objects.Version;
@@ -20,6 +28,7 @@ public class DatabaseManager {
     private static final String TAG = "DatabaseManager";
     private Visiteur visiteurSession;
     private Services service;
+    private String dateRapport;
     private static DatabaseManager INSTANCE;
 
     // Méthode Singleton
@@ -34,10 +43,10 @@ public class DatabaseManager {
     public DatabaseManager() {
         // Chargement des services avec la fabrique (Retrofit)
         this.service = new Retrofit.Builder()
-                                   .baseUrl(END_POINT)
-                                   .addConverterFactory(GsonConverterFactory.create())
-                                   .build()
-                                   .create(Services.class);
+                .baseUrl(END_POINT)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(Services.class);
 
         // Notification de succès
         Log.d(TAG, "Service loaded.");
@@ -82,7 +91,7 @@ public class DatabaseManager {
      * @param vis_login
      * @param vis_mdp
      */
-    public void connexionVisiteur(String vis_login, String vis_mdp) {
+    public void connexionVisiteur(String vis_login, String vis_mdp, final LoginCallback callback) {
 
         // Création d'un visiteur
         Visiteur visiteur = new Visiteur();
@@ -100,16 +109,19 @@ public class DatabaseManager {
                 if(visiteurSession.getMatricule() != null)
                 {
                     Log.d(TAG, "Connexion OK ! matricule " + visiteurSession.getMatricule());
+                    callback.onLoginOk();
                 }
                 else
                 {
                     Log.d(TAG, "Couple Identifiant/Mot de passe incorrecte ");
+                    callback.onLoginFailed();
                 }
             }
 
             @Override
             public void onFailure(Call<Visiteur> call, Throwable t) {
                 Log.d(TAG, "Erreur de login ! " + t.getLocalizedMessage());
+                callback.onLoginFailed();
             }
 
         });
@@ -168,34 +180,35 @@ public class DatabaseManager {
      * Retoure les praticiens associés à un visiteur dont le matricule est passé en paramètre
      * @param vis_matricule
      */
-    public void getPraticienByVisMatricule(final String vis_matricule) {
+    public void getPraticienByVisMatricule(final String vis_matricule, final PraticienListCallback callback) {
 
         // Création d'un praticien
         Praticien praticien = new Praticien();
         praticien.setVisiteur(vis_matricule);
 
         // Requête
-        service.getPraticienByVisMatricule(vis_matricule).enqueue(new Callback<Praticien>() {
+        service.getPraticienByVisMatricule(vis_matricule).enqueue(new Callback<List<Praticien>>() {
 
             @Override
-            public void onResponse(Call<Praticien> call, Response<Praticien> response) {
+            public void onResponse(Call<List<Praticien>> call, Response<List<Praticien>> response) {
+                List<Praticien> praticienSessions = response.body();
 
-                Praticien praticienSession = response.body();
-
-                if(praticienSession.getNom() != null)
+                if(praticienSessions.size() == 0)
                 {
-                    Log.d(TAG, "Praticien récuperé : " + praticienSession.getNom() + " " + praticienSession.getPrenom());
+                    callback.onFailed();
                 }
+
                 else
                 {
-                    Log.d(TAG, "Aucun praticien avec ce matricule");
+                    callback.onGetList(praticienSessions);
                 }
 
             }
 
             @Override
-            public void onFailure(Call<Praticien> call, Throwable t) {
+            public void onFailure(Call<List<Praticien>> call, Throwable t) {
                 Log.d(TAG, "Erreur " + t.getLocalizedMessage());
+                callback.onFailed();
             }
 
         });
@@ -210,31 +223,34 @@ public class DatabaseManager {
      * est passé en paramètre
      * @param vis_matricule
      */
-    public void getRapportVisiteDatesByVisMatricule(final String vis_matricule) {
-        /*
-        service.getRapportVisiteDatesByVisMatricule(vis_matricule).enqueue(new Callback<RapportVisite>() {
+    public void getRapportVisiteDatesByVisMatricule(final String vis_matricule, final MoisListCallback callback) {
+
+        service.getRapportVisiteDatesByVisMatricule(vis_matricule).enqueue(new Callback<List<Mois>>() {
 
             @Override
-            public void onResponse(Call<RapportVisite> call, Response<RapportVisite> response) {
-                RapportVisite rapportVisite = response.body();
+            public void onResponse(Call<List<Mois>> call, Response<List<Mois>> response) {
+                List<Mois> mois = response.body();
 
-                if(rapportVisite.rap_moisRapport != null)
+                if(mois.size() == 0)
                 {
-                    Log.d(TAG, "Rapport visité récuperé : " + rapportVisite.getDateRapport());
+                    callback.onFailed();
                 }
+
                 else
                 {
-                    Log.d(TAG, "Aucun rapport pour ce matricule");
+                    callback.onGetMois(mois);
                 }
+
             }
 
             @Override
-            public void onFailure(Call<RapportVisite> call, Throwable t) {
+            public void onFailure(Call<List<Mois>> call, Throwable t) {
                 Log.d(TAG, "Erreur " + t.getMessage());
+                callback.onFailed();
             }
 
         });
-        */
+
     }
 
     /**
@@ -243,29 +259,24 @@ public class DatabaseManager {
      * @param vis_matricule
      * @param rap_dateRapport
      */
-    public void getRapportVisiteByVisMatriculeAndDate(final String vis_matricule, final String rap_dateRapport) {
+    public void getRapportVisiteByVisMatriculeAndDate(final String vis_matricule, final String rap_dateRapport, final RapportListCallback callback) {
 
         // Requête
-        service.getRapportVisiteByVisMatriculeAndDate(vis_matricule, rap_dateRapport).enqueue(new Callback<RapportVisite>() {
+        service.getRapportVisiteByVisMatriculeAndDate(vis_matricule, rap_dateRapport).enqueue(new Callback<List<RapportVisite>>() {
 
             @Override
-            public void onResponse(Call<RapportVisite> call, Response<RapportVisite> response) {
+            public void onResponse(Call<List<RapportVisite>> call, Response<List<RapportVisite>> response) {
 
-                RapportVisite rapportVisite = response.body();
+                List<RapportVisite> rapportVisites = response.body();
 
-                if(rapportVisite.rap_motif != null)
+                if(rapportVisites.size() != 0)
                 {
-                    Log.d(TAG, "Rapport visité récuperé : " + rapportVisite.rap_motif + " à la date du " + rapportVisite.getDateVisite());
+                    callback.onGet(rapportVisites);
                 }
-                else
-                {
-                    Log.d(TAG, "Aucun rapport pour ce matricule");
-                }
-
             }
 
             @Override
-            public void onFailure(Call<RapportVisite> call, Throwable t) {
+            public void onFailure(Call<List<RapportVisite>> call, Throwable t) {
                 Log.d(TAG, "Erreur");
             }
 
@@ -310,17 +321,16 @@ public class DatabaseManager {
     /**
      * Ajoute dans la base de données un nouveau rapport de visite dont les attributs sont passés en paramètres
      * @param vis_matricule
-     * @param rap_num
      * @param pra_num
      * @param coef_num
      * @param rap_motif
      * @param rap_bilan
      * @param rap_dateVisite
      */
-    public void createRapportVisite(String vis_matricule, int rap_num, int pra_num, int coef_num, String rap_motif, String rap_bilan, String rap_dateVisite){
+    public void createRapportVisite(String vis_matricule, int pra_num, int coef_num, String rap_motif, String rap_bilan, String rap_dateVisite, final RapportCreateCallback callback){
 
         // Création du rapport de visite
-        RapportVisite rapportVisite = new RapportVisite(vis_matricule, rap_num, pra_num, coef_num, rap_motif, rap_bilan, rap_dateVisite);
+        RapportVisite rapportVisite = new RapportVisite(vis_matricule, pra_num, coef_num, rap_motif, rap_bilan, rap_dateVisite);
 
         // Requête
         service.createRapportVisite(rapportVisite).enqueue(new Callback<RapportVisite>() {
@@ -328,11 +338,13 @@ public class DatabaseManager {
             @Override
             public void onResponse(Call<RapportVisite> call, Response<RapportVisite> response) {
                 Log.d(TAG, "Rapport envoyé !");
+                callback.onSend();
             }
 
             @Override
             public void onFailure(Call<RapportVisite> call, Throwable t) {
                 Log.d(TAG, "Erreur lors de l'envoi du rapport");
+                callback.onFailedSend();
             }
 
         });
@@ -345,7 +357,7 @@ public class DatabaseManager {
     /**
      * Retourne tous les coefficients de confiance
      */
-    public void getCoefficientConfiance() {
+    public void getCoefficientConfiance(final CoefListCallback callback) {
 
         // Requête
         service.getCoefficientConfiance().enqueue(new Callback<List<CoefficientConfiance>>() {
@@ -354,13 +366,22 @@ public class DatabaseManager {
             public void onResponse(Call<List<CoefficientConfiance>> call, Response<List<CoefficientConfiance>> response) {
 
                 List<CoefficientConfiance> coefficientConfiances = response.body();
-                Log.d(TAG, "Liste coeff : (" + coefficientConfiances.size() + ")");
+
+                if(coefficientConfiances == null || coefficientConfiances.isEmpty())
+                {
+                   callback.onFailedCoef();
+                }
+                else
+                {
+                    callback.onGetListCoef(coefficientConfiances);
+                }
 
             }
 
             @Override
             public void onFailure(Call<List<CoefficientConfiance>> call, Throwable t) {
                 Log.d(TAG, "Erreur");
+                callback.onFailedCoef();
             }
 
         });
@@ -390,4 +411,8 @@ public class DatabaseManager {
 
         });
     }
+
+    public void setDateRapport(String dateRapport){ this.dateRapport = dateRapport; }
+
+    public String getDateRapport() {  return dateRapport; }
 }

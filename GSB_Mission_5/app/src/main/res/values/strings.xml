@@ -24,7 +24,7 @@
     <string name="add_screen_motif_input">Rédigez votre motif</string>
     <string name="add_screen_bilan_label">Bilan de la visite :</string>
     <string name="add_screen_bilan_input">Rédigez votre bilan</string>
-    <string name="add_screen_coefconfiance_label">Coefficient de confiance :</string>
+    <string name="add_screen_coefconfiance_label">Coef.confiance :</string>
     <string name="add_screen_confirm_button">Valider</string>
     <string name="add_screen_back_button">Retour</string>
 

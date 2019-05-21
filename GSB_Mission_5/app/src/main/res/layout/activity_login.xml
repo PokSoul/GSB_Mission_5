@@ -47,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/login_screen_id_input"
+        android:text="lvillachane"
         app:layout_constraintTop_toBottomOf="@+id/login_screen_title"
         app:layout_constraintStart_toEndOf="@+id/login_screen_id_label"
         app:layout_constraintBaseline_toBaselineOf="@+id/login_screen_id_label" />
@@ -66,6 +67,7 @@
         android:id="@+id/login_screen_password_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="azerty"
         android:layout_marginTop="8dp"
         android:hint="@string/login_screen_password_input"
         app:layout_constraintStart_toEndOf="@+id/login_screen_password_label"

@@ -3,6 +3,7 @@ package fr.mission5.gsb.persistence;
 import java.util.List;
 
 import fr.mission5.gsb.objects.CoefficientConfiance;
+import fr.mission5.gsb.objects.Mois;
 import fr.mission5.gsb.objects.Praticien;
 import fr.mission5.gsb.objects.RapportVisite;
 import fr.mission5.gsb.objects.Version;
@@ -34,17 +35,17 @@ public interface Services {
     Call<Praticien> getPraticienByNum(@Path("pra_num") int pra_num);
 
     @GET("/praticien/visiteur/{vis_matricule}")
-    Call<Praticien> getPraticienByVisMatricule(@Path("vis_matricule") String vis_matricule);
+    Call<List<Praticien>> getPraticienByVisMatricule(@Path("vis_matricule") String vis_matricule);
 
     //======================================//
     // SERVICES DE LA TABLE "RapportVisite" //
     //======================================//
 
     @GET("/rapportvisite/visiteur/{vis_matricule}/daterapport")
-    Call<RapportVisite> getRapportVisiteDatesByVisMatricule(@Path("vis_matricule") String vis_matricule);
+    Call<List<Mois>> getRapportVisiteDatesByVisMatricule(@Path("vis_matricule") String vis_matricule);
 
     @GET("/rapportvisite/visiteur/{vis_matricule}/daterapport/{rap_dateRapport}/")
-    Call<RapportVisite> getRapportVisiteByVisMatriculeAndDate(@Path("vis_matricule") String vis_matricule, @Path("rap_dateRapport") String rap_dateRapport);
+    Call<List<RapportVisite>> getRapportVisiteByVisMatriculeAndDate(@Path("vis_matricule") String vis_matricule, @Path("rap_dateRapport") String rap_dateRapport);
 
     @GET("/rapportvisite/{rap_num}/visiteur/{vis_matricule}/")
     Call<RapportVisite> getRapportVisiteByNumAndVisMatricule(@Path("rap_num") int rap_num, @Path("vis_matricule") String vis_matricule);

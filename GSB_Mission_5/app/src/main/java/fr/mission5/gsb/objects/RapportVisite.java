@@ -44,10 +44,9 @@ public class RapportVisite {
 	public Timestamp rap_moisRapport;
 
     // Constructor
-	public RapportVisite(String vis_matricule, int rap_num, int pra_num, int coef_num, String rap_motif, String rap_bilan, String rap_dateVisite) {
+	public RapportVisite(String vis_matricule, int pra_num, int coef_num, String rap_motif, String rap_bilan, String rap_dateVisite) {
 
 		this.vis_matricule 	 = vis_matricule;
-		this.rap_num 		 = rap_num;
 		this.pra_num 		 = pra_num;
 		this.coef_num 		 = coef_num;
 		this.rap_motif 		 = rap_motif;

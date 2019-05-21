@@ -8,11 +8,11 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import fr.mission5.gsb.R;
-import fr.mission5.gsb.persistence.DatabaseManager;
 
 public class HomeActivity extends AppCompatActivity {
 
     // boutons
+    private Button logoutButtonBiew;
     private Button addButtonView;
     private Button monthButtonView;
 
@@ -22,6 +22,15 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         // initialisation des vues
+        logoutButtonBiew = findViewById(R.id.home_screen_logout_button);
+        logoutButtonBiew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // redirige vers la page d'avant en detruisant celle ci
+                finish();
+            }
+        });
+
         addButtonView = findViewById(R.id.home_screen_add_button);
         addButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
