@@ -13,6 +13,8 @@ namespace GSB_Mission_5_Server.Models
         public string vis_matricule { get; set; }
         public int rap_num { get; set; }
         public int pra_num { get; set; }
+        public int coef_num { get; set; }
+        public string rap_motif { get; set; }
         public string rap_bilan { get; set; }
         public DateTime rap_dateVisite { get; set; }
         public DateTime rap_dateRapport { get; set; }

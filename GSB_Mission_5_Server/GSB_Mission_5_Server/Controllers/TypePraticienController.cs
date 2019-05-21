@@ -10,19 +10,26 @@ using System.Web.Http;
 
 namespace GSB_Mission_5_Server.Controllers
 {
+    /// <summary>
+    /// Contrôleur lié aux types de praticiens
+    /// </summary
     [AllowAnonymous, RoutePrefix("api")]
     public class TypePraticienController : ApiController
     {
         private readonly MySqlConnection _connection;
 
+        /// <summary>
+        /// Constructeur permettant d'injecter la connexion
+        /// </summary>
         public TypePraticienController()
         {
             _connection = new MySqlConnection(Const.connectionString);
         }
 
-        /**
-         * Retourne tous les types de praticiens
-         */
+        /// <summary>
+        /// Retourne tous les types de praticiens
+        /// </summary>
+        /// <returns></returns>
         [HttpGet, Route("typepraticien")]
         public IHttpActionResult GetTypesPraticien()
         {
@@ -31,9 +38,11 @@ namespace GSB_Mission_5_Server.Controllers
             return Ok(result);
         }
 
-        /**
-         * Retourne le type de praticien dont le code est passé en paramètre
-         */
+        /// <summary>
+        /// Retourne le type de praticien dont le code est passé en paramètre
+        /// </summary>
+        /// <param name="type_code"></param>
+        /// <returns></returns>
         [HttpGet, Route("typepraticien/{type_code}")]
         public IHttpActionResult GetTypePraticien(string type_code)
         {
