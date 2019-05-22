@@ -6,8 +6,8 @@ import fr.mission5.gsb.objects.Praticien;
 
 public interface PraticienListCallback {
 
-    void onGetList(List<Praticien> praticiens);
+    void onPraticienListOk(List<Praticien> lesPraticiens);
 
-    void onFailed();
+    void onPraticienListFailed();
 
 }

@@ -2,8 +2,8 @@ package fr.mission5.gsb.callbacks;
 
 public interface RapportCreateCallback {
 
-    void onSend();
+    void onRapportCreateOk();
 
-    void onFailedSend();
+    void onRapportCreateFailed();
 
 }

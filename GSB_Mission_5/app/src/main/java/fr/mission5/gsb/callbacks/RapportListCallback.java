@@ -6,6 +6,6 @@ import fr.mission5.gsb.objects.RapportVisite;
 
 public interface RapportListCallback {
 
-    void onGet(List<RapportVisite> rapports);
+    void onRapportListOk(List<RapportVisite> rapports);
 
 }

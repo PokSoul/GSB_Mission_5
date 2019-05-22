@@ -36,10 +36,9 @@ public class AddActivity extends AppCompatActivity implements PraticienListCallb
     private DatabaseManager databaseManager = DatabaseManager.getInstance();
     private AddActivity context = this;
 
+    // Composants
     private EditText mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-
-    // composants
     private Button backButton;
 
     @Override
@@ -54,6 +53,10 @@ public class AddActivity extends AppCompatActivity implements PraticienListCallb
         loadCoefList();
 
     }
+
+    /*===============================================*
+     * Chargement des éléments du formulaire d'ajout *
+     *===============================================*/
 
     public void loadDatePicker() {
         mDisplayDate = findViewById(R.id.add_screen_datevisite_input);
@@ -75,13 +78,11 @@ public class AddActivity extends AppCompatActivity implements PraticienListCallb
             }
         });
 
-
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-
-                String date = month + "/" + day + "/" + year;
+                month += 1;
+                String date = year + "-" + month + "-" + day;
                 mDisplayDate.setText(date);
             }
         };
@@ -94,7 +95,7 @@ public class AddActivity extends AppCompatActivity implements PraticienListCallb
             @Override
             public void onClick(View v) {
 
-                // get form data
+                // Ressources du formulaire
                 EditText dateVisiteView = findViewById(R.id.add_screen_datevisite_input);
                 Spinner spinnerPraticienNameView = findViewById(R.id.add_screen_praticien_spinner);
                 EditText motifView = findViewById(R.id.add_screen_motif_input);
@@ -102,7 +103,7 @@ public class AddActivity extends AppCompatActivity implements PraticienListCallb
 
                 if(!dateVisiteView.getText().toString().isEmpty() && !motifView.getText().toString().isEmpty() && !bilanView.getText().toString().isEmpty())
                 {
-                    // get data from form
+                    // On obtient les données depuis le formulaire
                     Visiteur visiteurSession = databaseManager.getVisiteurSession();
                     String vis_matricule = visiteurSession.getMatricule();
 
@@ -113,7 +114,7 @@ public class AddActivity extends AppCompatActivity implements PraticienListCallb
                     String rap_bilan = bilanView.getText().toString(); // form
                     String rap_dateVisite = dateVisiteView.getText().toString();
 
-                    // create request
+                    // Requête d'insertion
                     databaseManager.createRapportVisite(vis_matricule, pra_num, coef_num, rap_motif, rap_bilan, rap_dateVisite, context);
                 }
 
@@ -140,14 +141,20 @@ public class AddActivity extends AppCompatActivity implements PraticienListCallb
         databaseManager.getCoefficientConfiance(this);
     }
 
+    /*===========*
+     * Callbacks *
+     *===========*/
+
+    // Praticien :
+
     @Override
-    public void onGetList(List<Praticien> praticiens) {
+    public void onPraticienListOk(List<Praticien> lesPraticiens) {
 
         // creation d'une liste contenant les noms des praticiens
         List<String> praticienNames = new ArrayList<>();
-        for(Praticien praticien : praticiens)
+        for(Praticien unPraticien : lesPraticiens)
         {
-            praticienNames.add(praticien.getNom() + " " + praticien.getPrenom());
+            praticienNames.add(unPraticien.getNom() + " " + unPraticien.getPrenom());
         }
 
         Spinner spinner = findViewById(R.id.add_screen_praticien_spinner);
@@ -157,44 +164,44 @@ public class AddActivity extends AppCompatActivity implements PraticienListCallb
     }
 
     @Override
-    public void onGetListCoef(List<CoefficientConfiance> coeffffs) {
+    public void onPraticienListFailed() {
+        Toast.makeText(getApplicationContext(), "Aucun praticien", Toast.LENGTH_LONG).show();
+    }
 
-        // creation d'une liste contenant la liste des coeffffs
-        List<String> coeffNames = new ArrayList<>();
-        for(CoefficientConfiance coeffff : coeffffs)
+    // CoefficientConfiance :
+
+    @Override
+    public void onCoefListOk(List<CoefficientConfiance> lesCoefs) {
+
+        // creation d'une liste contenant les coefs
+        List<String> coefNames = new ArrayList<>();
+        for(CoefficientConfiance unCoef : lesCoefs)
         {
-            coeffNames.add(coeffff.getNum() + ". " + coeffff.getLibelle());
+            coefNames.add(unCoef.getNum() + ". " + unCoef.getLibelle());
         }
 
         Spinner spinner = findViewById(R.id.add_screen_coefconfiance_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, coeffNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, coefNames);
         spinner.setAdapter(adapter);
 
     }
 
     @Override
-    public void onFailedCoef() {
+    public void onCoefListFailed() {
         Toast.makeText(getApplicationContext(), "Aucun coef", Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onFailed() {
-        Toast.makeText(getApplicationContext(), "Aucun praticien", Toast.LENGTH_LONG).show();
-    }
 
-
-    // rapport send
+    // Création du rapport de visite :
 
     @Override
-    public void onSend() {
-        Toast.makeText(getApplicationContext(), "Rapport envoyé !", Toast.LENGTH_LONG).show();
-
-        // redirect to previous page
+    public void onRapportCreateOk() {
+        Toast.makeText(getApplicationContext(), "Rapport envoyé", Toast.LENGTH_LONG).show();
         finish();
     }
 
     @Override
-    public void onFailedSend() {
-        Toast.makeText(getApplicationContext(), "Erreur envoi du rapport", Toast.LENGTH_LONG).show();
+    public void onRapportCreateFailed() {
+        Toast.makeText(getApplicationContext(), "Création du rapport impossible", Toast.LENGTH_LONG).show();
     }
 }

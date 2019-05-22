@@ -29,15 +29,15 @@ public class RapportVisiteAdapter extends RecyclerView.Adapter<RapportVisiteAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        // recupere le rapport de visite courrant de l'item en question
+        // Récupère le rapport de visite courant de l'item en question
         RapportVisite rapportVisite = rapportVisites.get(position);
 
-        // personnaliser
+        // Personnalisation
         // holder.nom.setText()
         // holder.prenom.setText()
         holder.date.setText(rapportVisite.getDateVisite());
 
-        // quand on clique sur les details de chaque item
+        // Quand on clique sur les détails d'un item
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +66,4 @@ public class RapportVisiteAdapter extends RecyclerView.Adapter<RapportVisiteAdap
         }
 
     }
-
-
 }

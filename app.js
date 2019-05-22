@@ -47,12 +47,11 @@ app.post('/visiteur/connexion', function(req, res) {
         // Récuperation du résultat unique
         var result = results[0];
 
-        // S'il y a un résultat et que la comparaison est bonne
-        if(result.vis_mdp == vis_mdp)
-        {
-            // Envoi l'ensemble des données reçu par la rêquete
-            return res.send(result);
-        }
+		if(result != null && result.vis_mdp == vis_mdp)
+	        {
+	            // Envoi l'ensemble des données reçu par la rêquete
+	            return res.send(result);
+	        }
 
         // S'il n'y a pas de résultat, visiteur inexistant
         else
@@ -99,7 +98,7 @@ app.get('/praticien/visiteur/:vis_matricule', function(req, res) {
     // Création de la requête
     db.query('SELECT * FROM praticien WHERE pra_visiteur = ?', vis_matricule, function (error, results, fields) {
         if (error) throw error;
-        return res.send(results[0]);
+        return res.send(results);
     })
 
 });
@@ -120,9 +119,7 @@ app.get('/rapportvisite/visiteur/:vis_matricule/daterapport', function(req, res)
     // Création de la requête
     db.query('SELECT DISTINCT SUBSTR(rap_dateRapport, 1, 7) AS rap_moisRapport FROM rapport_visite WHERE vis_matricule = ?', vis_matricule, function (error, results, fields) {
         if (error) throw error;
-        let result = results[0];       
-        console.log(result);
-        return res.send(result);
+        return res.send(results);
     })
 
 });
@@ -140,9 +137,7 @@ app.get('/rapportvisite/visiteur/:vis_matricule/daterapport/:rap_dateRapport/', 
     db.query("SELECT * FROM rapport_visite WHERE vis_matricule = ?", vis_matricule, function (error, results, fields) {
         if (error) throw error;
        
-        let result = results[0];
-
-        return res.send(result);
+        return res.send(results);
     })
 
 });
@@ -209,6 +204,7 @@ app.post('/rapportvisite/saisie', function(req, res) {
 
  });
 
+
 //=============================================//
 // SERVICES DE LA TABLE "CoefficientConfiance" //
 //=============================================//
@@ -216,16 +212,17 @@ app.post('/rapportvisite/saisie', function(req, res) {
 /**
  * getCoefficientConfiance
  */
-app.get('/coefficientsconfiance', function(req, res) {
+app.get('/coefficientconfiance', function(req, res) {
    db.query('SELECT * FROM coefficient_confiance', function (error, results, fields) {
         if (error) throw error;
+        console.log(results);
         return res.send(results);
     });});
 
 /**
  * getCoefficientConfianceByNum
  */
-app.get('/coefficientsconfiance/:coef_num', function(req, res) {
+app.get('/coefficientconfiance/:coef_num', function(req, res) {
 
     // Récuperation des paramètres
     let coef_num = req.params.coef_num;

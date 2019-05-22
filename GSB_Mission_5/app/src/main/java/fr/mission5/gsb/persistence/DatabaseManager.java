@@ -43,10 +43,10 @@ public class DatabaseManager {
     public DatabaseManager() {
         // Chargement des services avec la fabrique (Retrofit)
         this.service = new Retrofit.Builder()
-                .baseUrl(END_POINT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(Services.class);
+                                   .baseUrl(END_POINT)
+                                   .addConverterFactory(GsonConverterFactory.create())
+                                   .build()
+                                   .create(Services.class);
 
         // Notification de succès
         Log.d(TAG, "Service loaded.");
@@ -191,16 +191,15 @@ public class DatabaseManager {
 
             @Override
             public void onResponse(Call<List<Praticien>> call, Response<List<Praticien>> response) {
-                List<Praticien> praticienSessions = response.body();
+                List<Praticien> lesPraticiens = response.body();
 
-                if(praticienSessions.size() == 0)
+                if(lesPraticiens.size() == 0)
                 {
-                    callback.onFailed();
+                    callback.onPraticienListFailed();
                 }
-
                 else
                 {
-                    callback.onGetList(praticienSessions);
+                    callback.onPraticienListOk(lesPraticiens);
                 }
 
             }
@@ -208,7 +207,7 @@ public class DatabaseManager {
             @Override
             public void onFailure(Call<List<Praticien>> call, Throwable t) {
                 Log.d(TAG, "Erreur " + t.getLocalizedMessage());
-                callback.onFailed();
+                callback.onPraticienListFailed();
             }
 
         });
@@ -233,12 +232,11 @@ public class DatabaseManager {
 
                 if(mois.size() == 0)
                 {
-                    callback.onFailed();
+                    callback.onMoisListFailed();
                 }
-
                 else
                 {
-                    callback.onGetMois(mois);
+                    callback.onMoisListOk(mois);
                 }
 
             }
@@ -246,7 +244,7 @@ public class DatabaseManager {
             @Override
             public void onFailure(Call<List<Mois>> call, Throwable t) {
                 Log.d(TAG, "Erreur " + t.getMessage());
-                callback.onFailed();
+                callback.onMoisListFailed();
             }
 
         });
@@ -271,7 +269,7 @@ public class DatabaseManager {
 
                 if(rapportVisites.size() != 0)
                 {
-                    callback.onGet(rapportVisites);
+                    callback.onRapportListOk(rapportVisites);
                 }
             }
 
@@ -337,14 +335,14 @@ public class DatabaseManager {
 
             @Override
             public void onResponse(Call<RapportVisite> call, Response<RapportVisite> response) {
-                Log.d(TAG, "Rapport envoyé !");
-                callback.onSend();
+                Log.d(TAG, "Rapport de visite ajouté.");
+                callback.onRapportCreateOk();
             }
 
             @Override
             public void onFailure(Call<RapportVisite> call, Throwable t) {
-                Log.d(TAG, "Erreur lors de l'envoi du rapport");
-                callback.onFailedSend();
+                Log.d(TAG, "Erreur lors de l'ajout du rapport de visite");
+                callback.onRapportCreateFailed();
             }
 
         });
@@ -369,11 +367,11 @@ public class DatabaseManager {
 
                 if(coefficientConfiances == null || coefficientConfiances.isEmpty())
                 {
-                   callback.onFailedCoef();
+                   callback.onCoefListFailed();
                 }
                 else
                 {
-                    callback.onGetListCoef(coefficientConfiances);
+                    callback.onCoefListOk(coefficientConfiances);
                 }
 
             }
@@ -381,7 +379,7 @@ public class DatabaseManager {
             @Override
             public void onFailure(Call<List<CoefficientConfiance>> call, Throwable t) {
                 Log.d(TAG, "Erreur");
-                callback.onFailedCoef();
+                callback.onCoefListFailed();
             }
 
         });
@@ -400,7 +398,7 @@ public class DatabaseManager {
             public void onResponse(Call<CoefficientConfiance> call, Response<CoefficientConfiance> response) {
 
                 CoefficientConfiance coefficientConfiance = response.body();
-                Log.d(TAG, "CoefficientConfiance n°" + coefficientConfiance.getNum() + " récupéré " + coefficientConfiance.getLibelle());
+                Log.d(TAG, "CoefficientConfiance n°" + coefficientConfiance.getNum() + " récupéré (" + coefficientConfiance.getLibelle() + ")");
 
             }
 
@@ -412,7 +410,11 @@ public class DatabaseManager {
         });
     }
 
-    public void setDateRapport(String dateRapport){ this.dateRapport = dateRapport; }
+    public void setDateRapport(String dateRapport){
+        this.dateRapport = dateRapport;
+    }
 
-    public String getDateRapport() {  return dateRapport; }
+    public String getDateRapport() {
+        return dateRapport;
+    }
 }

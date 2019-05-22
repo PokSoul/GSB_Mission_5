@@ -6,8 +6,8 @@ import fr.mission5.gsb.objects.CoefficientConfiance;
 
 public interface CoefListCallback {
 
-    void onGetListCoef(List<CoefficientConfiance> coeffffs);
+    void onCoefListOk(List<CoefficientConfiance> lesCoefs);
 
-    void onFailedCoef();
+    void onCoefListFailed();
 
 }

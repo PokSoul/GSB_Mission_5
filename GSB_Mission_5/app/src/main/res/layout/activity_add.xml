@@ -46,9 +46,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/add_screen_datevisite_input"
-        android:text="5/21/2019"
         app:layout_constraintBaseline_toBaselineOf="@+id/add_screen_datevisite_label"
         app:layout_constraintLeft_toRightOf="@+id/add_screen_datevisite_label" />
+        <!-- android:text="2019-01-01" -->
 
     <!-- Praticien -->
     <TextView
@@ -85,11 +85,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/add_screen_motif_input"
-        android:text="Un motif"
         android:singleLine="true"
         app:layout_constraintLeft_toRightOf="@+id/add_screen_motif_label"
         app:layout_constraintBaseline_toBaselineOf="@+id/add_screen_motif_label" />
-        <!-- android:text="Un motif" : debug -->
+        <!-- android:text="Un motif" -->
 
     <!-- Bilan -->
     <TextView
@@ -107,7 +106,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:text="Un bilan"
         android:lines="3"
         android:minLines="3"
         android:maxLines="3"
@@ -116,7 +114,7 @@
         android:hint="@string/add_screen_bilan_input"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_screen_bilan_label" />
-        <!-- android:text="Un bilan" : debug -->
+        <!-- android:text="Un bilan" -->
 
     <!-- CoefConfiance -->
     <TextView

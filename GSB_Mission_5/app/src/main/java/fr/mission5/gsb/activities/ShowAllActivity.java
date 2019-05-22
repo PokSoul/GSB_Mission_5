@@ -52,6 +52,10 @@ public class ShowAllActivity extends AppCompatActivity implements RapportListCal
         loadRapportsVisite();
     }
 
+    /*=========================*
+     * Chargement des éléments *
+     *=========================*/
+
     public void loadRapportsVisite() {
 
         Visiteur visiteurSession = databaseManager.getVisiteurSession();
@@ -60,15 +64,20 @@ public class ShowAllActivity extends AppCompatActivity implements RapportListCal
         databaseManager.getRapportVisiteByVisMatriculeAndDate(visiteurSession.getMatricule(), dateRapport, context);
     }
 
-    @Override
-    public void onGet(List<RapportVisite> rapports) {
+    /*===========*
+     * Callbacks *
+     *===========*/
 
+    @Override
+    public void onRapportListOk(List<RapportVisite> rapports) {
+
+        // Récupère la portion de l'écran où va être injecté la liste des rapports
         RecyclerView recyclerView = findViewById(R.id.recycler);
 
-        // init and assign adapter to recycler view
+        // Injection de l'adapter qui organise l'ensemble des rapports
         recyclerView.setAdapter(new RapportVisiteAdapter(rapports));
 
-        // assign layout manager
+        // Positionne les éléments de façon linéaire
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
     }

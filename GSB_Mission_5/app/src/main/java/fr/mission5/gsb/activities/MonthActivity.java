@@ -59,22 +59,30 @@ public class MonthActivity extends AppCompatActivity implements MoisListCallback
 
     }
 
+    /*====================================*
+     * Chargement des éléments du Spinner *
+     *====================================*/
+
     public void loadMonthsList() {
 
         Visiteur visiteurSession = databaseManager.getVisiteurSession();
-
         databaseManager.getRapportVisiteDatesByVisMatricule(visiteurSession.getMatricule(), context);
 
     }
 
+    /*===========*
+     * Callbacks *
+     *===========*/
+
+    // Liste des mois (AAAA-MM) :
 
     @Override
-    public void onGetMois(List<Mois> mois) {
-        // creation d'une liste contenant les noms de mois / periode
+    public void onMoisListOk(List<Mois> lesMois) {
+        // Création d'une liste contenant les couples "AAAA-MM"
         List<String> monthsPeriods = new ArrayList<>();
-        for(Mois mois_u : mois)
+        for(Mois unMois : lesMois)
         {
-            monthsPeriods.add(mois_u.getRap_moisRapport());
+            monthsPeriods.add(unMois.getRap_moisRapport());
         }
 
         Spinner spinner = findViewById(R.id.month_screen_daterapport_spinner);
@@ -83,7 +91,7 @@ public class MonthActivity extends AppCompatActivity implements MoisListCallback
     }
 
     @Override
-    public void onFailed() {
-        Toast.makeText(getApplicationContext(), "Aucun mois", Toast.LENGTH_LONG).show();
+    public void onMoisListFailed() {
+        Toast.makeText(getApplicationContext(), "Aucun mois disponible", Toast.LENGTH_LONG).show();
     }
 }
